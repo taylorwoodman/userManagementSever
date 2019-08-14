@@ -3,11 +3,11 @@ const bcrypt = require("bcrypt");
 
 
 function loggedIn(req, res){
-  if(!req.session.user){ 
-    res.send('')
-  } else {
-  res.send(req.session.user)
-}
+    if(!req.session.user){ 
+      res.send('')
+    } else {
+    res.send(req.session.user)
+  }
 }
 
 
