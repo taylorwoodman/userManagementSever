@@ -75,17 +75,27 @@ async function allUsers(req, res){
   res.send(users)
 }
 
-function handleEdit(req, res) {
-  db.user1.update({id: req.params.id},
-   {first_name: req.body.firstName,
-   last_name: req.body.lastName,
-   username: req.body.username,
-   email: req.body.email}
-   )
-    .then(data => {
-        res.send(data)
-    })
-    .catch(console.error)
+async function handleEdit(req, res) {
+  try {
+    const db = req.app.get('db')
+
+    await db.query(`UPDATE user1 
+    SET first_name='${req.body.firstName}',
+    last_name='${req.body.lastName}',
+    username='${req.body.username}',
+    email='${req.body.email}'
+    WHERE id=${req.params.id}`)
+    if(+req.params.id === req.session.user.id){
+      req.session.user.first_name = req.body.firstName
+      req.session.user.last_name = req.body.lastName
+      req.session.user.email = req.body.email
+      req.session.user.username = req.body.username
+    }
+    res.send('updated')
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(error)
+  }
 }
 
 function handleLogout(req, res) {
@@ -93,13 +103,16 @@ function handleLogout(req, res) {
 }
 
 async function handleDelete(req, res) {
-  const db = req.app.get("db")
+  try {
+    const db = req.app.get('db')
 
-  db.user1.destroy({id: req.params.id})
-    .then(data => {
-        res.send(data)
-    })
-    .catch(console.error)
+    await db.query(`DELETE FROM user1 
+    WHERE id=${req.params.id}`)
+    res.send('ok')
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(error)
+  }
 }
 
 module.exports = {
