@@ -52,7 +52,7 @@ async function handleLogin(req, res){
   try {
     const db = req.app.get("db");
     
-    const [user1] = await db.user1.find({email: req.body.email})
+    const [user1] = await db.user1.where('email=$1 OR username=$1', [req.body.username])
     if(!user1) return res.status(400).send('Please enter valid login credentials')
     
     const authenticated = await bcrypt.compare(req.body.password, user1.password_hash)
