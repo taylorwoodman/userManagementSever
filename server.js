@@ -5,7 +5,7 @@ const massive = require("massive");
 const bcrypt = require("bcrypt");
 const controller = require("./controller");
 const session = require("express-session");
-
+const notes = require("./notes");
 
 massive(
   "postgres://payatibqsjencc:a47ff2ea01bffb9ba68faf0c55749fc5d9c411a0d6a35d21def38e573e89afca@ec2-54-243-193-59.compute-1.amazonaws.com:5432/d95k0sh95mea3c?ssl=true"
@@ -40,5 +40,13 @@ app.get("/logout", controller.handleLogout);
 app.delete("/users/:id", controller.handleDelete);
 
 app.get("/allUsers", controller.allUsers)
+
+app.get("/notes", notes.getNotes)
+
+app.put("/updateNote/:id", notes.updateNote)
+
+app.post("/addNote", notes.addNotes)
+
+app.delete("/deleteNote", notes.deleteNotes)
 
 app.listen(8080, () => console.log("Listening"))
