@@ -2,11 +2,11 @@ async function getNotes(req, res){
   try {
     const db = req.app.get('db')
 
-    await db.query(`SELECT * 
+    const notes = await db.query(`SELECT * 
     FROM notes 
     JOIN user1 ON user1.id = notes.user_id`)
     
-    res.send('got notes')
+    res.send(notes)
   } catch (error) {
     console.error(error)
     res.status(500).send(error)
