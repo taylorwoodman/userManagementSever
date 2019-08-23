@@ -47,6 +47,6 @@ app.put("/updateNote/:id", notes.updateNote)
 
 app.post("/addNote", notes.addNotes)
 
-app.delete("/deleteNote", notes.deleteNotes)
+app.delete("/deleteNote/:id", notes.deleteNotes)
 
 app.listen(8080, () => console.log("Listening"))
