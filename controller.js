@@ -108,6 +108,8 @@ async function handleDelete(req, res) {
 
     await db.query(`DELETE FROM user1 
     WHERE id=${req.params.id}`)
+    
+
     res.send('ok')
   } catch (error) {
     console.error(error)

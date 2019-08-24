@@ -4,7 +4,8 @@ async function getNotes(req, res){
 
     const notes = await db.query(`SELECT * 
     FROM notes 
-    WHERE user_id=${req.session.user.id}`)
+    WHERE user_id=${req.session.user.id}
+    ORDER BY id`)
     
     res.send(notes)
   } catch (error) {
@@ -21,7 +22,8 @@ async function updateNote(req, res){
     SET note='${req.body.note}'
     WHERE id=${req.params.id}`)
 
-    const notes = await db.query(`SELECT * FROM notes WHERE user_id=${req.body.user_id}`)
+    const notes = await db.query(`SELECT * FROM notes WHERE user_id=${req.session.user.id}
+    ORDER BY id`)
 
 
     res.send(notes)
@@ -38,7 +40,8 @@ async function addNotes(req, res){
     await db.query(`INSERT INTO notes (user_id)
     VALUES (${req.body.user_id})`)
 
-    const notes = await db.query(`SELECT * FROM notes WHERE user_id=${req.body.user_id}`)
+    const notes = await db.query(`SELECT * FROM notes WHERE user_id=${req.session.user.id}
+    ORDER BY id`)
 
     res.send(notes)
   } catch (error) {
@@ -53,7 +56,8 @@ async function deleteNotes(req, res){
 
     await db.query(`DELETE FROM notes WHERE id=${req.params.id}`)
 
-    const notes = await db.query(`SELECT * FROM notes WHERE user_id=${req.body.user_id}`)
+    const notes = await db.query(`SELECT * FROM notes WHERE user_id=${req.session.user.id}
+    ORDER BY id`)
 
     res.send(notes)
   } catch (error) {
