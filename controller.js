@@ -79,12 +79,15 @@ async function handleEdit(req, res) {
   try {
     const db = req.app.get('db')
 
-    await db.query(`UPDATE user1 
-    SET first_name='${req.body.firstName}',
-    last_name='${req.body.lastName}',
-    username='${req.body.username}',
-    email='${req.body.email}'
-    WHERE id=${req.params.id}`)
+    await db.query(`
+    UPDATE user1 
+    SET first_name='$1',
+    last_name='$2',
+    username='$3',
+    email='$4'
+    WHERE id=$5
+    `, [req.body.firstName, req.body.lastName, req.body.username,
+       req.body.email, req.params.id])
     if(+req.params.id === req.session.user.id){
       req.session.user.first_name = req.body.firstName
       req.session.user.last_name = req.body.lastName
@@ -106,8 +109,15 @@ async function handleDelete(req, res) {
   try {
     const db = req.app.get('db')
 
-    await db.query(`DELETE FROM user1 
-    WHERE id=${req.params.id}`)
+    await db.query(`
+    DELETE FROM notes
+    WHERE user_id=$1
+    `, [req.params.id])
+
+    await db.query(`
+    DELETE FROM user1 
+    WHERE id=$1
+    `, [req.params.id])
     
 
     res.send('ok')
