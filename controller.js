@@ -81,13 +81,12 @@ async function handleEdit(req, res) {
 
     await db.query(`
     UPDATE user1 
-    SET first_name='$1',
-    last_name='$2',
-    username='$3',
-    email='$4'
-    WHERE id=$5
-    `, [req.body.firstName, req.body.lastName, req.body.username,
-       req.body.email, req.params.id])
+    SET first_name='${req.body.firstName}',
+    last_name='${req.body.lastName}',
+    username='${req.body.username}',
+    email='${req.body.email}'
+    WHERE id=${req.params.id}
+    `)
     if(+req.params.id === req.session.user.id){
       req.session.user.first_name = req.body.firstName
       req.session.user.last_name = req.body.lastName
