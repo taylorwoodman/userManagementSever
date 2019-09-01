@@ -21,8 +21,11 @@ app.use(session({
 
 
 app.use(bodyParser.json());
+
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+
 app.get('/isAuth', (req, res) => res.send(!!req.session.user))
+
 app.get('/isAdmin', (req, res) => {
   if(req.session.user){
     res.send(req.session.user.admin)
